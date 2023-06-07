@@ -158,8 +158,9 @@ const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
 
             {/*@ts-ignore TYPE NEEDS FIXING*/}
             <Player id="ask" content={i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}>
+              {/*@ts-ignore TYPE NEEDS FIXING*/}
 
-            {i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}
+              {i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}
 
             </Player>
           </Button>
@@ -173,13 +174,13 @@ const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
   if (bentoApproveCallback && bentoApproveCallback.approvalState === BentoApprovalState.PENDING)
     return (
       <>
-        
+
         <SoundsProvider sounds={createSounds(sounds)}>
 
           <Button {...rest} disabled>
-            
+
             <Player id="ask" content={<Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>}>
-            <Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>
+              <Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>
 
             </Player>
           </Button>
@@ -194,13 +195,13 @@ const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
     return (
       <>
 
-                
+
         <SoundsProvider sounds={createSounds(sounds)}>
 
           <Button  {...rest} color="pink" onClick={handleGetPermit}>
-            
+
             <Player id="ask" content={i18n._(t`Approve Inari Master Contract`)}>
-            {i18n._(t`Approve Inari Master Contract`)}
+              {i18n._(t`Approve Inari Master Contract`)}
 
             </Player>
           </Button>
@@ -213,20 +214,20 @@ const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
 
   return (
 
-                  
-                  <SoundsProvider sounds={createSounds(sounds)}>
 
-                  <Button {...rest} disabled={pending} color={pending ? 'gray' : 'gradient'} onClick={onExecute}>
-                    
-                    <Player id="ask" content={children}>
-                    {children}
-        
-                    </Player>
-                  </Button>
-        
-                  {approveFlow}
-        
-                </SoundsProvider>
+    <SoundsProvider sounds={createSounds(sounds)}>
+
+      <Button {...rest} disabled={pending} color={pending ? 'gray' : 'gradient'} onClick={onExecute}>
+
+        <Player id="ask" content={children}>
+          {children}
+
+        </Player>
+      </Button>
+
+      {approveFlow}
+
+    </SoundsProvider>
   )
 }
 
