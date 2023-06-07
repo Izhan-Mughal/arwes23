@@ -9,8 +9,29 @@ import { BentoApprovalState } from 'app/hooks/useBentoMasterApproveCallback'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useDerivedInariState, useSelectedInariStrategy } from 'app/state/inari/hooks'
 import React, { FC, useCallback, useState } from 'react'
+// @ts-ignore: Unreachable code error
+// eslint-disable-next-line simple-import-sort/imports
+import { Arwes, ThemeProvider, Heading, Paragraph, Frame, createTheme, SoundsProvider, createSounds, withSounds } from 'arwes';
+// @ts-ignore
+const Player = withSounds()(props => (
+  <span
 
-interface InariButtonProps extends ButtonProps {}
+    onClick={() => props.sounds[props.id].play()}
+
+  >
+    {props.content}
+  </span>
+));
+const sounds = {
+  shared: { volume: 1 },
+  players: {
+    information: { sound: { src: ['/sounds/information.mp3'] } },
+    ask: { sound: { src: ['/sounds/ask.mp3'] } },
+    warning: { sound: { src: ['/sounds/warning.mp3'] } },
+    error: { sound: { src: ['/sounds/error.mp3'] } },
+  },
+};
+interface InariButtonProps extends ButtonProps { }
 
 const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
   const { i18n } = useLingui()
@@ -46,71 +67,166 @@ const InariButton: FC<InariButtonProps> = ({ children, ...rest }) => {
 
   if (!account)
     return (
-      <Button {...rest} disabled>
-        {i18n._(t`Connect Wallet`)}
-      </Button>
+      <SoundsProvider sounds={createSounds(sounds)}>
+
+
+        <Button {...rest} disabled>
+
+
+          <Player id="ask" content={i18n._(t`Connect Wallet`)}>
+            {i18n._(t`Connect Wallet`)}
+
+          </Player>
+        </Button>
+
+
+      </SoundsProvider>
+
     )
 
   if (!inputValue || inputValue.equalTo(ZERO))
     return (
-      <Button {...rest} disabled>
-        {i18n._(t`Enter an amount`)}
-      </Button>
+
+      <SoundsProvider sounds={createSounds(sounds)}>
+
+
+        <Button {...rest} disabled>
+
+
+          <Player id="ask" content={i18n._(t`Enter an amount`)}>
+            {i18n._(t`Enter an amount`)}
+
+          </Player>
+        </Button>
+
+
+      </SoundsProvider>
     )
 
   if (inputValue && balances && balances.inputTokenBalance && balances.inputTokenBalance.lessThan(inputValue))
     return (
-      <Button {...rest} disabled>
-        {i18n._(t`Insufficient Balance`)}
-      </Button>
+
+
+      <SoundsProvider sounds={createSounds(sounds)}>
+
+
+        <Button {...rest} disabled>
+
+
+          <Player id="ask" content={i18n._(t`Insufficient Balance`)}>
+            {i18n._(t`Insufficient Balance`)}
+
+          </Player>
+        </Button>
+
+
+      </SoundsProvider>
     )
 
   if (approveCallback && approveCallback[0] === ApprovalState.PENDING)
     return (
       <>
-        <Button {...rest} disabled>
-          {/*@ts-ignore TYPE NEEDS FIXING*/}
-          <Dots>{i18n._(t`Approving Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}</Dots>
-        </Button>
-        {approveFlow}
+
+        <SoundsProvider sounds={createSounds(sounds)}>
+
+
+          <Button {...rest} disabled>
+            {/*@ts-ignore TYPE NEEDS FIXING*/}
+
+            <Player id="ask" content={<Dots>{i18n._(t`Approving Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}</Dots>}>
+              {/*@ts-ignore TYPE NEEDS FIXING*/}
+              <Dots>{i18n._(t`Approving Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}</Dots>
+
+            </Player>
+          </Button>
+
+          {approveFlow}
+
+        </SoundsProvider>
       </>
     )
 
   if (approveCallback && approveCallback[0] === ApprovalState.NOT_APPROVED)
     return (
       <>
-        <Button {...rest} color="pink" onClick={approveCallback[1]}>
-          {/*@ts-ignore TYPE NEEDS FIXING*/}
-          {i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}
-        </Button>
-        {approveFlow}
+
+
+        <SoundsProvider sounds={createSounds(sounds)}>
+
+
+          <Button {...rest} color="pink" onClick={approveCallback[1]}>
+
+            {/*@ts-ignore TYPE NEEDS FIXING*/}
+            <Player id="ask" content={i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}>
+
+            {i18n._(t`Approve Inari to spend`) + ` ${approveCallback[2].currency.symbol}`}
+
+            </Player>
+          </Button>
+
+          {approveFlow}
+
+        </SoundsProvider>
       </>
     )
 
   if (bentoApproveCallback && bentoApproveCallback.approvalState === BentoApprovalState.PENDING)
     return (
       <>
-        <Button {...rest} disabled>
-          <Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>
-        </Button>
-        {approveFlow}
+        
+        <SoundsProvider sounds={createSounds(sounds)}>
+
+          <Button {...rest} disabled>
+            
+            <Player id="ask" content={<Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>}>
+            <Dots>{i18n._(t`Approving Inari Master Contract`)}</Dots>
+
+            </Player>
+          </Button>
+
+          {approveFlow}
+
+        </SoundsProvider>
       </>
     )
 
   if (bentoApproveCallback && bentoApproveCallback.approvalState === BentoApprovalState.NOT_APPROVED)
     return (
       <>
-        <Button {...rest} color="pink" onClick={handleGetPermit}>
-          {i18n._(t`Approve Inari Master Contract`)}
-        </Button>
-        {approveFlow}
+
+                
+        <SoundsProvider sounds={createSounds(sounds)}>
+
+          <Button  {...rest} color="pink" onClick={handleGetPermit}>
+            
+            <Player id="ask" content={i18n._(t`Approve Inari Master Contract`)}>
+            {i18n._(t`Approve Inari Master Contract`)}
+
+            </Player>
+          </Button>
+
+          {approveFlow}
+
+        </SoundsProvider>
       </>
     )
 
   return (
-    <Button {...rest} disabled={pending} color={pending ? 'gray' : 'gradient'} onClick={onExecute}>
-      {children}
-    </Button>
+
+                  
+                  <SoundsProvider sounds={createSounds(sounds)}>
+
+                  <Button {...rest} disabled={pending} color={pending ? 'gray' : 'gradient'} onClick={onExecute}>
+                    
+                    <Player id="ask" content={children}>
+                    {children}
+        
+                    </Player>
+                  </Button>
+        
+                  {approveFlow}
+        
+                </SoundsProvider>
   )
 }
 
